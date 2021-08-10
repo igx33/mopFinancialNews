@@ -1,0 +1,128 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /api/news/:
+    get:
+      operationId: listNews
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: id
+        required: false
+        in: query
+        description: id
+        schema:
+          type: string
+      - name: symbol__short_name
+        required: false
+        in: query
+        description: symbol__short_name
+        schema:
+          type: string
+      - name: title
+        required: false
+        in: query
+        description: title
+        schema:
+          type: string
+      - name: description
+        required: false
+        in: query
+        description: description
+        schema:
+          type: string
+      - name: pub_date
+        required: false
+        in: query
+        description: pub_date
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/News'
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    News:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        symbol:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            short_name:
+              type: string
+              maxLength: 10
+            full_name:
+              type: string
+              maxLength: 100
+          required:
+          - short_name
+          - full_name
+          readOnly: true
+        description:
+          type: string
+          maxLength: 10000
+        original_guid:
+          type: string
+          maxLength: 100
+        link:
+          type: string
+          maxLength: 1000
+        pub_date:
+          type: string
+          maxLength: 100
+        title:
+          type: string
+          maxLength: 1000
+        created_date:
+          type: string
+          format: date-time
+      required:
+      - description
+      - original_guid
+      - link
+      - pub_date
+      - title
+      - created_date
